@@ -1,0 +1,331 @@
+@import url('./reset.css');
+@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap');
+
+.App {
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+/* header */
+.header {
+  width: 100%;
+  height: 90px;
+  padding: 0 7%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  nav {
+    display: flex;
+    gap: 45px;
+
+    a {
+      font-size: 15px;
+      color: #6B7280;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &:hover {
+        color: #5B7CFA;
+      }
+    }
+  }
+
+  .mainTitle {
+    h1 {
+      color: #6B5BFA;
+      font-size: 32px;
+
+    }
+  }
+
+  .menu {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+  }
+}
+
+/* hero */
+.hero {
+  min-height: calc(100vh - 90px);
+  padding: 50px 7% 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(80px, 8vw, 500px);
+}
+
+/* left */
+.heroLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .subBox{
+    display: flex;
+  }
+
+  .subText {
+    font-size: 14px;
+    color: #5B7CFA;
+    font-weight: 600;
+    padding-top: 20px;
+  }
+
+  h2 {
+    margin-top: 20px;
+    padding-bottom: 20px;
+
+    font-size: 42px;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-top: 25px;
+
+    color: #6B7280;
+    line-height: 1.7;
+  }
+}
+
+.startBtn {
+  margin-top: 35px;
+
+  width: 140px;
+  height: 54px;
+
+  border: none;
+  border-radius: 18px;
+
+  background: #5B7CFA;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+  &:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+      0 10px 20px rgba(91, 124, 250, 0.3);
+  }
+}
+
+/* search */
+.searchBox {
+  margin-top: 60px;
+
+  width: 520px;
+
+  padding: 30px;
+
+  border-radius: 30px;
+
+  background: white;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.05);
+
+  h4 {
+    margin-bottom: 20px;
+
+    font-size: 22px;
+  }
+}
+
+.inputBox {
+  width: 100%;
+  height: 60px;
+
+  padding-left: 20px;
+
+  border-radius: 18px;
+
+  background: #F3F4F8;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  input {
+    flex: 1;
+
+    border: none;
+    background: transparent;
+    outline: none;
+
+    font-size: 15px;
+  }
+
+  button {
+    width: 48px;
+    height: 48px;
+
+    margin-right: 6px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: #5B7CFA;
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    img{
+      width: 30px;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+
+/* right */
+.heroRight {
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+}
+
+
+.todoCard {
+  position: relative;
+
+  width: 430px;
+
+  padding: 35px;
+
+  border-radius: 32px;
+
+  background: rgba(255,255,255,0.8);
+
+  backdrop-filter: blur(20px);
+
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.06);
+
+  
+  h3 {
+    font-size: 24px;
+    margin-bottom: 35px;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    list-style: none;
+
+    li {
+      display: flex;
+      align-items: center;
+
+      gap: 15px;
+
+      padding-bottom: 18px;
+
+      border-bottom: 1px solid #E5E7EB;
+
+      font-size: 15px;
+
+      div {
+        width: 24px;
+        height: 24px;
+
+        border-radius: 8px;
+
+        border: 2px solid #D1D5DB;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .done {
+      color: #9CA3AF;
+
+      text-decoration: line-through;
+
+      div {
+        border: none;
+        background: #5B7CFA;
+        color: white;
+      }
+    }
+  }
+}
+
+.progress {
+  margin-top: 35px;
+
+  span {
+    font-size: 14px;
+    color: #6B7280;
+  }
+
+  .bar {
+    width: 100%;
+    height: 10px;
+
+    margin-top: 12px;
+
+    border-radius: 999px;
+
+    background: #E5E7EB;
+
+    overflow: hidden;
+
+    .fill {
+      width: 66%;
+      height: 100%;
+
+      background:
+        linear-gradient(
+          90deg,
+          #5B7CFA,
+          #8BA4FF
+        );
+
+      border-radius: 999px;
+    }
+  }
+}
+
+
+.todoBtn {
+  width: 100%;
+  height: 56px;
+
+  margin-top: 35px;
+
+  border: none;
+  border-radius: 18px;
+
+  background: #6f7ea0;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
