@@ -17,6 +17,13 @@
   align-items: center;
   justify-content: space-between;
 
+  position: sticky;
+  top: 0;
+
+  backdrop-filter: blur(14px);
+
+  z-index: 100;
+
   nav {
     display: flex;
     gap: 45px;
@@ -50,8 +57,8 @@
 
 /* hero */
 .hero {
-  min-height: calc(100vh - 90px);
-  padding: 50px 7% 100px;
+  min-height: calc(100vh - 200px);
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,8 +71,28 @@
   display: flex;
   flex-direction: column;
 
-  .subBox{
+  .subBox {
     display: flex;
+  }
+
+  .subBox img {
+    width: 280px;
+
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-14px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
   }
 
   .subText {
@@ -98,10 +125,15 @@
   height: 54px;
 
   border: none;
-  border-radius: 18px;
+  border-radius: 14px;
 
-  background: #5B7CFA;
+  background: linear-gradient(135deg,
+      #5072fc,
+      #6f88eb);
+
   color: white;
+
+  backdrop-filter: blur(18px);
 
   font-size: 15px;
   font-weight: 600;
@@ -118,77 +150,7 @@
   }
 }
 
-/* search */
-.searchBox {
-  margin-top: 60px;
 
-  width: 520px;
-
-  padding: 30px;
-
-  border-radius: 30px;
-
-  background: white;
-
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.05);
-
-  h4 {
-    margin-bottom: 20px;
-
-    font-size: 22px;
-  }
-}
-
-.inputBox {
-  width: 100%;
-  height: 60px;
-
-  padding-left: 20px;
-
-  border-radius: 18px;
-
-  background: #F3F4F8;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  input {
-    flex: 1;
-
-    border: none;
-    background: transparent;
-    outline: none;
-
-    font-size: 15px;
-  }
-
-  button {
-    width: 48px;
-    height: 48px;
-
-    margin-right: 6px;
-
-    border: none;
-    border-radius: 14px;
-
-    background: #5B7CFA;
-    color: white;
-
-    cursor: pointer;
-
-    transition: 0.3s;
-
-    img{
-      width: 30px;
-    }
-
-    &:hover {
-      transform: scale(1.05);
-    }
-  }
-}
 
 
 /* right */
@@ -209,14 +171,14 @@
 
   border-radius: 32px;
 
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
 
   backdrop-filter: blur(20px);
 
   box-shadow:
-    0 20px 40px rgba(0,0,0,0.06);
+    0 20px 40px rgba(0, 0, 0, 0.06);
 
-  
+
   h3 {
     font-size: 24px;
     margin-bottom: 35px;
@@ -294,11 +256,9 @@
       height: 100%;
 
       background:
-        linear-gradient(
-          90deg,
+        linear-gradient(90deg,
           #5B7CFA,
-          #8BA4FF
-        );
+          #8BA4FF);
 
       border-radius: 999px;
     }
@@ -306,26 +266,260 @@
 }
 
 
-.todoBtn {
+/* search */
+.search {
+  height: 475px;
+  background: #EEF2FF;
+  margin-bottom: 100px;
+
+
+}
+
+.searchBox {
+  margin: 0 auto;
+  margin-top: 60px;
+
+  width: 520px;
+
+  padding: 50px;
+
+  border-radius: 30px;
+
+  //background: white;
+  text-align: center;
+  justify-content: center;
+
+  h4 {
+    margin-bottom: 40px;
+
+    font-size: 25px;
+  }
+}
+
+.inputBox {
   width: 100%;
-  height: 56px;
+  height: 60px;
 
-  margin-top: 35px;
+  padding-left: 20px;
 
-  border: none;
   border-radius: 18px;
 
-  background: #6f7ea0;
-  color: white;
 
-  font-size: 15px;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  cursor: pointer;
+  background: #ffffff;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.05);
 
-  transition: 0.3s;
+  input {
+    flex: 1;
 
-  &:hover {
-    transform: translateY(-2px);
+    border: none;
+    background: transparent;
+    outline: none;
+
+    font-size: 15px;
+
+
+  }
+
+  button {
+    width: 48px;
+    height: 48px;
+
+    margin-right: 6px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: #5B7CFA;
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    img {
+      width: 30px;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.searchBtnBox {
+  display: flex;
+  gap: 60px;
+  text-align: center;
+  justify-content: center;
+
+  .sBtn>p {
+    text-align: center;
+    font-size: 14px;
+    padding-top: 10px;
+  }
+}
+
+.keywordBtn {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 15px;
+  background-color: #FFFFFF;
+  border: 1px solid #C7C7C7;
+
+  .material-symbols-rounded {
+    color: #5B7DFF;
+  }
+
+}
+
+
+/* ======= 강의 영상 ======== */
+.video {
+  width: 92%;
+  max-width: 1400px;
+  height: 580px;
+  background-color: #5B7DFF;
+  border-radius: 60px;
+  text-align: center;
+  justify-content: center;
+  margin: 0 auto;
+
+  margin-bottom: 100px;
+
+  h3 {
+    font-size: 30px;
+    color: white;
+    padding: 40px 0 40px;
+  }
+
+  .youtubeBox {
+    display: flex;
+    gap: 20px;
+    text-align: center;
+    justify-content: center;
+
+    .videoClass {
+      width: 280px;
+      height: 375px;
+      background-color: #F5F5F5;
+      border-radius: 20px;
+      text-align: left;
+
+      >p {
+        color: #B5ABAB;
+        font-size: 13px;
+      }
+    }
+  }
+
+}
+
+
+/* ======= 바로가기 부분 ======== */
+.goalSection {
+  display: flex;
+  gap: 40px;
+  text-align: center;
+  justify-content: center;
+  margin: 0 auto;
+
+  margin-bottom: 150px;
+
+
+  .goalInner {
+    display: flex;
+    border-radius: 20px;
+    width: 670px;
+    height: 265px;
+    background-color: #d7e0fd;
+
+
+
+
+    .goalText {
+      text-align: left;
+      padding: 60px 0px 20px 40px;
+
+      >span {
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      >p {
+        font-size: 15px;
+        padding-bottom: 40px;
+      }
+
+      >button {
+        width: 160px;
+        height: 50px;
+
+        border: none;
+        border-radius: 14px;
+
+        background: linear-gradient(135deg,
+            #5072fc,
+            #6f8cff);
+
+        color: white;
+
+        backdrop-filter: blur(8px);
+
+        font-size: 15px;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition:
+          transform 0.35s ease,
+          box-shadow 0.35s ease,
+          background 0.35s ease;
+
+        box-shadow:
+          0 10px 20px rgba(80, 114, 252, 0.2);
+
+        &:hover {
+          transform: translateY(-4px);
+
+          box-shadow:
+            0 18px 30px rgba(80, 114, 252, 0.28);
+
+          background: linear-gradient(135deg,
+              #5d7cff,
+              #7b96ff);
+        }
+
+        &:active {
+          transform: translateY(-1px) scale(0.98);
+        }
+      }
+
+    }
+
+    .goalImg {
+      padding: 40px 30px 10px;
+    }
+
+  }
+
+}
+
+.footer {
+  height: 200px;
+  padding: 2% 14%;
+  background-color: #02083be1;
+
+  .mainTitle {
+    h1 {
+      color: #6B5BFA;
+      font-size: 32px;
+
+    }
   }
 }
