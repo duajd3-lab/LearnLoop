@@ -1,0 +1,82 @@
+.todoCalendar {
+  width: 320px;
+  padding: 28px;
+  border-radius: 28px;
+  background: #ffffff;
+  border: 1px solid #dbe4ff;
+  box-shadow: 0 18px 35px rgba(31, 41, 55, 0.06);
+}
+
+.calendarHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  span {
+    font-size: 13px;
+    color: #5b7cfa;
+    font-weight: 700;
+  }
+
+  h3 {
+    margin-top: 6px;
+    font-size: 22px;
+  }
+
+  p {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #5b7cfa;
+    font-size: 13px;
+    font-weight: 700;
+  }
+}
+
+.weekDays,
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.weekDays {
+  margin-bottom: 12px;
+
+  span {
+    text-align: center;
+    font-size: 13px;
+    color: #9ca3af;
+    font-weight: 600;
+  }
+}
+
+.daysGrid {
+  button {
+    height: 36px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: #374151;
+    font-size: 14px;
+    cursor: pointer;
+
+    &:hover {
+      background: #eef2ff;
+      color: #5b7cfa;
+    }
+
+    &.today {
+      background: #5b7cfa;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 8px 18px rgba(91, 124, 250, 0.28);
+    }
+
+    &:empty {
+      cursor: default;
+      background: transparent;
+    }
+  }
+}

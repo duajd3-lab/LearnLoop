@@ -41,9 +41,11 @@
   }
 
   .mainTitle {
-    h1 {
+    .h1 {
       color: #6B5BFA;
       font-size: 32px;
+      font-family: 'sans-serif';
+      font-weight: 600;
 
     }
   }
@@ -58,11 +60,10 @@
 /* hero */
 .hero {
   min-height: calc(100vh - 200px);
-
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(80px, 8vw, 500px);
+  gap: clamp(80px, 16vw, 500px);
 }
 
 /* left */
@@ -374,6 +375,10 @@
 
   .material-symbols-rounded {
     color: #5B7DFF;
+  }
+
+  &:hover{
+    background-color: #8474df85;
   }
 
 }
