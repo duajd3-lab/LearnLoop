@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/Explore.scss';
+import { useNavigate } from 'react-router-dom';
 
 function Explore() {
-
+    //const navigate = useNavigate();
 
     const [videos, setVideos] = useState([]);
     const [title, setTitle] = useState('자기계발을 위한 강의');
     const [keyword, setKeyword] = useState('');
+
+    const [savedVideos, setSavedVideos] = useState(() => {
+        return JSON.parse(localStorage.getItem('savedVideos')) || [];
+    });
 
     const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
@@ -36,6 +41,40 @@ function Explore() {
         return txt.value;
     };
 
+
+
+    //스크랩 토글
+    const toggleSave = (video) => {
+        const videoData = {
+            videoId: video.id.videoId,
+            title: decodeHtml(video.snippet.title),
+            channelTitle: video.snippet.channelTitle,
+            thumbnail: video.snippet.thumbnails.medium.url,
+            url: `https://www.youtube.com/watch?v=${video.id.videoId}`,
+        };
+
+        let updatedVideos;
+
+        if (isSaved(video.id.videoId)) {
+            updatedVideos = savedVideos.filter(
+                (item) => item.videoId !== video.id.videoId
+            );
+        } else {
+            updatedVideos = [videoData, ...savedVideos];
+        }
+
+        setSavedVideos(updatedVideos);
+        localStorage.setItem('savedVideos', JSON.stringify(updatedVideos));
+
+        //   navigate('/saved');
+    };
+
+    //저장 여부 확인 함수
+    const isSaved = (videoId) => {
+        return savedVideos.some(
+            (video) => video.videoId === videoId
+        );
+    };
 
     return (
         <div>
@@ -155,12 +194,15 @@ function Explore() {
 
                     {videos.map((video) => (
 
-                        <a
+                        <div
                             key={video.id.videoId}
-                            href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
-                            target='_blank'
-                            rel='noopener noreferrer'
                             className='videoClass'
+                            onClick={() =>
+                                window.open(
+                                    `https://www.youtube.com/watch?v=${video.id.videoId}`,
+                                    '_blank'
+                                )
+                            }
                         >
 
                             <img
@@ -168,16 +210,40 @@ function Explore() {
                                 alt={video.snippet.title}
                             />
 
-                            <span>
-                                {decodeHtml(video.snippet.title).length > 30
-                                    ? decodeHtml(video.snippet.title).slice(0, 30) + "..."
-                                    : decodeHtml(video.snippet.title)}
-                            </span>
+                            <div className='videoContent'>
 
-                            <p>
-                                {video.snippet.channelTitle}
-                            </p>
-                        </a>
+                                <span>
+                                    {decodeHtml(video.snippet.title).length > 40
+                                        ? decodeHtml(video.snippet.title).slice(0, 40) + "..."
+                                        : decodeHtml(video.snippet.title)}
+                                </span>
+
+                                <p>
+                                    {video.snippet.channelTitle}
+                                </p>
+                            </div>
+
+
+                            <div className="bookmarkArea">
+
+                                <button
+                                    className={`bookmarkBtn ${isSaved(video.id.videoId) ? 'active' : ''
+                                        }`}
+                                    onClick={(e) => {e.stopPropagation(); toggleSave(video);}}
+                                >
+
+                                    <span className="material-symbols-rounded">
+
+                                        {isSaved(video.id.videoId)
+                                            ? 'bookmark_added'
+                                            : 'bookmark'}
+
+                                    </span>
+
+                                </button>
+
+                            </div>
+                        </div>
                     ))}
                 </div>
 

@@ -1,5 +1,3 @@
-
-
 .exploreSearch {
   height: 475px;
   background: #EEF2FF;
@@ -20,7 +18,7 @@
   justify-content: center;
   margin: 0 auto;
 
-  margin-bottom: 100px;
+  margin-bottom: 500px;
 
   h3 {
     font-size: 30px;
@@ -29,42 +27,123 @@
   }
 
   .youtubeBox {
-    display: flex;
-    gap: 20px;
-    text-align: center;
-    justify-content: center;
+    display: grid;
+
+    grid-template-columns:
+      repeat(auto-fit, minmax(300px, 1fr));
+
+    gap: 30px;
 
     .videoClass {
-      width: 280px;
-      height: 375px;
-      //background-color: #424a5e;
+      position: relative;
+      width: 300px;
+      min-height: 350px;
       border-radius: 20px;
       text-align: left;
-        display: block;
-  text-decoration: none;
-  color: inherit;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 14px 30px rgba(31, 41, 55, 0.06);
+
+      >span{
+        //padding: 20px;
+      }
 
       >p {
         color: #B5ABAB;
         font-size: 13px;
       }
 
-      
+
     }
   }
 
   .videoClass img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 20px;
-}
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    //border-radius: 20px;
+  }
 
 }
 
-.videoClass span {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+
+.videoContent {
+  padding: 18px 18px 60px;
+
+  span {
+    display: block;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #1f2937;
+
+    line-height: 1.5;
+
+    margin-bottom: 10px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+  }
+
+  p {
+    color: #94a3b8;
+    font-size: 13px;
+  }
+}
+
+
+.bookmarkArea {
+  position: absolute;
+
+  right: 16px;
+  bottom: 16px;
+  z-index: 100;
+}
+
+.bookmarkBtn {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #eef2ff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  .material-symbols-rounded {
+    color: #5d606de3;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.active {
+    background: #eef2ff;
+
+    .material-symbols-rounded {
+      color: #5b7cfa;
+    }
+  }
+}
+
+.bookmarkBtn.active {
+  .material-symbols-rounded {
+    color: #5b7cfa;
+
+    font-variation-settings:
+      'FILL' 1;
+  }
 }

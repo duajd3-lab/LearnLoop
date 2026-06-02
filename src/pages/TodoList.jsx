@@ -109,13 +109,42 @@ function TodoList() {
     setTime(todo.time);
   };
 
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const date = String(today.getDate()).padStart(2, '0');
+
+  const dayNames = [
+    '일요일',
+    '월요일',
+    '화요일',
+    '수요일',
+    '목요일',
+    '금요일',
+    '토요일'
+  ];
+
+  const day = dayNames[today.getDay()];
+
+  //총 학습시간 계산
+  const totalStudyTime = todos
+    .filter(todo => todo.done)
+    .reduce((acc, todo) => {
+      return acc + Number(todo.time.replace('분', ''));
+    }, 0);
+
+  const hour = Math.floor(totalStudyTime / 60);
+  const minute = totalStudyTime % 60;
+
 
   return (
     <main className="todoPage">
       <div>
         <section className="todoHeader">
-          <div>
-            <p>2026.05.27 화요일</p>
+          <div className="todayDate">
+            <p>
+              {year}.{month}.{date} {day}
+            </p>
           </div>
           <div className="summaryTop">
             <div>
@@ -132,26 +161,28 @@ function TodoList() {
           </p>
         </section>
 
-         {/* 진행률 카드 */}
+        {/* 진행률 카드 */}
         <aside className="progressCard">
           <h3>Goal</h3>
 
-          <div className="circleProgress"  style={{
-              background: `conic-gradient(#5b7cfa 0 ${progress}%, #e5e9ff ${progress}% 100%)`,
-            }}>
+          <div className="circleProgress" style={{
+            background: `conic-gradient(#5b7cfa 0 ${progress}%, #e5e9ff ${progress}% 100%)`,
+          }}>
             <span>{progress}%</span>
           </div>
           <p>진행률 {progress}%</p>
           <div className="routineBox">
             <span>🔥 5일 연속 학습 중</span>
-            <span>⏱ 오늘 학습 시간 1h 20m</span>
+            <span>
+              ⏱ 오늘 학습 시간 {hour}h {minute}m
+            </span>
           </div>
         </aside>
       </div>
 
 
       <section className="todoNote">
-        <div className="fileTab">Today</div>
+        {/* <div className="fileTab">Today</div> */}
 
         <h3>오늘의 학습</h3>
 
@@ -177,31 +208,31 @@ function TodoList() {
 
         {/* 투두 리스트 출력 */}
         <div className="todoListWrap">
-        <ul>
-          {todos.map((todo) => (
-            <li key={todo.id} className={todo.done ? 'done' : ''}>
-              <button className="checkBtn"
-              onClick={()=> toggleTodo(todo.id)}>
-                {todo.done && '✓'}
-              </button>
+          <ul>
+            {todos.map((todo) => (
+              <li key={todo.id} className={todo.done ? 'done' : ''}>
+                <button className="checkBtn"
+                  onClick={() => toggleTodo(todo.id)}>
+                  {todo.done && '✓'}
+                </button>
 
-              <div className='todoInfo'>
-                <p>{todo.title}</p>
-                <span>{todo.time}</span>
-              </div>
+                <div className='todoInfo'>
+                  <p>{todo.title}</p>
+                  <span>{todo.time}</span>
+                </div>
 
-              <div className="todoActions">
+                <div className="todoActions">
                   <button onClick={() => startEdit(todo)}>수정</button>
                   <button onClick={() => deleteTodo(todo.id)}>삭제</button>
                 </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
 
-<TodoCalendar />
+      <TodoCalendar />
 
 
 

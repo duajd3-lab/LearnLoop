@@ -1,0 +1,201 @@
+.myPage {
+  width: 100%;
+  max-width: 1580px;
+  margin: 0 auto;
+  padding-top: 24px;
+}
+
+.mypageHeader {
+  //display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    color: #5b6bff;
+  }
+
+  .loginInfo {
+    text-align: right;
+    font-size: 13px;
+
+    button {
+      border: 0;
+      background: none;
+      cursor: pointer;
+      font-size: 12px;
+    }
+  }
+}
+
+.tabMenu {
+  display: flex;
+  margin-top: 30px;
+
+  button {
+    width: 130px;
+    height: 45px;
+    border: 0;
+    border-radius: 16px 16px 0 0;
+    background: #aebdff;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .active {
+    background: #5f78ff;
+  }
+}
+
+.mypageContent {
+  min-height: 620px;
+  background: #eef2ff;
+  padding: 15px 15px;
+}
+
+.todoLayout {
+  display: grid;
+  grid-template-columns: 280px 1fr 310px;
+  gap: 70px;
+  align-items: start;
+}
+
+.studyStatus {
+  text-align: center;
+
+  .countBox {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    div {
+      width: 75px;
+      height: 75px;
+      border-radius: 8px;
+      background: #5f78ff;
+      color: #fff;
+
+      strong {
+        display: block;
+        font-size: 26px;
+        margin-top: 13px;
+      }
+
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .goalCircle {
+    width: 150px;
+    height: 150px;
+    margin: 30px auto;
+    border-radius: 50%;
+    border: 8px solid #c5ceff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    font-weight: 700;
+  }
+
+  .routineBox {
+    width: 210px;
+    margin: 35px auto 0;
+    padding: 12px;
+    border-radius: 12px;
+    background: #b8d3ff;
+    font-size: 13px;
+
+    span {
+      display: block;
+    }
+  }
+}
+
+.todoBox {
+  min-height: 420px;
+  padding: 45px;
+  border: 2px solid #8a8cff;
+  border-radius: 18px;
+  background: #fff;
+
+  h3 {
+    margin-bottom: 25px;
+    font-size: 16px;
+  }
+
+  label {
+    display: block;
+    padding: 12px 0;
+    border-bottom: 1px solid #aaa;
+    font-size: 14px;
+
+    input {
+      margin-right: 12px;
+    }
+  }
+
+  button {
+    display: block;
+    margin: 80px auto 0;
+    padding: 12px 22px;
+    border: 0;
+    border-radius: 10px;
+    background: #5f78ff;
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
+.sideBoxes {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  div {
+    height: 75px;
+    border: 1px solid #8ab4ff;
+    border-radius: 12px;
+    background: #f7f9ff;
+
+    &:first-child {
+      height: 260px;
+    }
+  }
+}
+
+.bookmarkSection {
+  h3 {
+    margin-bottom: 30px;
+  }
+
+  .lectureGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .lectureCard {
+    padding: 20px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid #b6c4ff;
+
+    .thumb {
+      height: 150px;
+      border-radius: 14px;
+      background: #dde5ff;
+      margin-bottom: 18px;
+    }
+
+    h4 {
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: #777;
+      font-size: 14px;
+    }
+  }
+}

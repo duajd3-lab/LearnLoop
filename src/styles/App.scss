@@ -372,13 +372,19 @@
   border-radius: 15px;
   background-color: #FFFFFF;
   border: 1px solid #C7C7C7;
+  cursor: pointer;
 
   .material-symbols-rounded {
     color: #5B7DFF;
   }
 
-  &:hover{
-    background-color: #8474df85;
+  &:hover {
+    .material-symbols-rounded {
+      color: #ffffff;
+    }
+
+    background-color: #0066ff9a;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   }
 
 }

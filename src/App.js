@@ -23,9 +23,9 @@ function App() {
           </div>
 
           <nav className='menu'>
-            <Link to='/todo'>Todolist</Link>
+            {/* <Link to='/todo'>Todolist</Link> */}
             <Link to='/explore'>강의 탐색</Link>
-            <Link to='/saved'>저장한 강의</Link>
+            {/* <Link to='/saved'>저장한 강의</Link> */}
             <Link to='/mypage'>마이페이지</Link>
           </nav>
 

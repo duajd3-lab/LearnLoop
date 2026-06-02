@@ -133,7 +133,7 @@ function Home() {
 
         {/* ======= 강의 영상 ======== */}
         <section className='video'>
-          <h3>지금 인기있는 짧은 강의</h3>
+          <h3>오늘의 추천</h3>
 
           <div className='youtubeBox'>
             <div className='videoClass'>

@@ -1,52 +1,60 @@
 @import url('./reset.css');
 
 .todoPage {
-    min-height: calc(100vh - 90px);
-    padding: 50px 7% 100px;
-    background: #fafbff;
-    display: flex;
-    gap: 150px;
-    justify-content: center;
+  min-height: calc(100vh - 90px);
+  padding: 50px 7% 100px;
+  background: #fafbff;
+  display: flex;
+  gap: 150px;
+  justify-content: center;
 }
 
 .todoHeader {
-    margin-bottom: 45px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  margin-bottom: 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
-    p {
-        color: #6b7280;
-        font-size: 17px;
-        margin-bottom: 10px;
-        padding: 10px 0;
-    }
-    span{
-        color: #0141c0;
-        font-weight: 600;
-    }
+  p {
+    color: #6b7280;
+    font-size: 17px;
+    margin-bottom: 10px;
+    padding: 10px 0;
+  }
 
-    h2 {
-        font-size: 42px;
-        letter-spacing: -1px;
-    }
+  span {
+    color: #0141c0;
+    font-weight: 600;
+  }
 
-    button {
-        width: 150px;
-        height: 48px;
-        border: none;
-        border-radius: 15px;
-        background: #5b7cfa;
-        color: white;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
+  h2 {
+    font-size: 42px;
+    letter-spacing: -1px;
+  }
 
-        &:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 14px 24px rgba(91, 124, 250, 0.25);
-        }
+  button {
+    width: 150px;
+    height: 48px;
+    border: none;
+    border-radius: 15px;
+    background: #5b7cfa;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 24px rgba(91, 124, 250, 0.25);
     }
+  }
+}
+
+.todayDate {
+  p {
+    font-size: 18px;
+    color: #6b7280;
+  }
 }
 
 .summaryTop {
@@ -55,7 +63,8 @@
 
   div {
     flex: 1;
-    width: 120px; height: 80px;
+    width: 120px;
+    height: 80px;
     border-radius: 18px;
     background: #5b7cfa;
     color: white;
@@ -78,75 +87,75 @@
 
 
 .todoNote {
-    position: relative;
-    padding: 48px 34px 34px;
-    border-radius: 0 30px 30px 30px;
-    background: #eef2ffd5;
-    width: 500px;
-   
+  position: relative;
+  padding: 48px 34px 34px;
+  border-radius:  30px;
+  background: #eef2ffd5;
+  width: 500px;
 
-    .fileTab {
-        position: absolute;
-        top: -40px;
-        left: -1px;
-        width: 140px;
-        height: 42px;
-        border-radius: 22px 22px 0 0;
+
+  // .fileTab {
+  //   position: absolute;
+  //   top: -40px;
+  //   left: -1px;
+  //   width: 140px;
+  //   height: 42px;
+  //   border-radius: 22px 22px 0 0;
+  //   background: #5b7cfa;
+  // }
+
+  h3 {
+    font-size: 24px;
+    margin-bottom: 28px;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0 18px;
+    border-bottom: 1px solid #d8deef;
+
+    p {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    span {
+      display: block;
+      margin-top: 5px;
+      color: #8a94a6;
+      font-size: 13px;
+    }
+
+    &.done {
+      p {
+        color: #9ca3af;
+        text-decoration: line-through;
+      }
+
+      .checkBtn {
         background: #5b7cfa;
+        border-color: #5b7cfa;
+        color: white;
+      }
     }
-
-    h3 {
-        font-size: 24px;
-        margin-bottom: 28px;
-    }
-
-    ul {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-    }
-
-    li {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 14px 0 18px;
-        border-bottom: 1px solid #d8deef;
-
-        p {
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        span {
-            display: block;
-            margin-top: 5px;
-            color: #8a94a6;
-            font-size: 13px;
-        }
-
-        &.done {
-            p {
-                color: #9ca3af;
-                text-decoration: line-through;
-            }
-
-            .checkBtn {
-                background: #5b7cfa;
-                border-color: #5b7cfa;
-                color: white;
-            }
-        }
-    }
+  }
 }
 
 .checkBtn {
-    width: 24px;
-    height: 24px;
-    border: 2px solid #9ca3af;
-    border-radius: 7px;
-    background: white;
-    cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #9ca3af;
+  border-radius: 7px;
+  background: white;
+  cursor: pointer;
 }
 
 
@@ -164,7 +173,7 @@
     margin-bottom: 28px;
   }
 
-  > p {
+  >p {
     margin: 24px 0;
     font-size: 17px;
     font-weight: 600;
@@ -352,7 +361,7 @@
 
   .todoForm {
     grid-template-columns: 1fr;
-    
+
     input,
     button {
       width: 100%;
