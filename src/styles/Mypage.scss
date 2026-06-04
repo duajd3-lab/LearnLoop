@@ -6,7 +6,7 @@
 }
 
 .mypageHeader {
-  //display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
 
@@ -24,6 +24,14 @@
       cursor: pointer;
       font-size: 12px;
     }
+  }
+  .myPageBtn{
+    background-color: #5072fc73;
+    border: 0;
+    cursor: pointer;
+      font-size: 15px;
+      padding: 10px;
+      border-radius: 10px;
   }
 }
 

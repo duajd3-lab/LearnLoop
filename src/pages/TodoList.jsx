@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import '../styles/TodoList.scss';
 import TodoCalendar from '../components/TodoCalendar';
 
-function TodoList() {
+function TodoList({ email }) {
 
   // 투두 데이터 상태
   // 처음 실행될 때 localStorage에 저장된 값이 있으면 가져오고,
@@ -12,10 +12,7 @@ function TodoList() {
     return saveTodos
       ? JSON.parse(saveTodos)
       : [
-        { id: 1, title: '숏폼 편집 강의 듣기', time: '20분', done: true },
-        { id: 2, title: '피그마 UI 따라 만들기', time: '30분', done: false },
-        { id: 3, title: '블로그 글쓰기', time: '25분', done: false },
-        { id: 4, title: '엑셀 함수 복습하기', time: '20분', done: false },
+
       ];
   });
 
@@ -60,7 +57,7 @@ function TodoList() {
             ? {
               ...todo,
               title: input,
-              time: time || '10분',
+              time: time || '',
             }
             : todo
         )
@@ -72,13 +69,15 @@ function TodoList() {
       // editId가 없으면 새 투두 추가
       const newTodo = {
         id: Date.now(),
+        user: email,
         title: input,
-        time: time || '10분',
+        time: time || '',
         done: false,
       };
 
       // 새 투두를 맨 위에 추가
       setTodos([newTodo, ...todos]);
+      localStorage.setItem('learnloopTodos', JSON.stringify([newTodo, ...todos]))
     }
     // 입력창 초기화
     setInput('');

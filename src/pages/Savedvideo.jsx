@@ -1,22 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import '../styles/Savedvideo.scss';
+import { auth } from '../firebase';
 
 function Savedvideo() {
-
   const [savedVideos, setSavedVideos] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('savedVideos')) || [];
-    setSavedVideos(data);
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+
+      if (currentUser) {
+        const data =
+          JSON.parse(localStorage.getItem(`savedVideos_${currentUser.uid}`)) || [];
+
+        setSavedVideos(data);
+      } else {
+        setSavedVideos([]);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const deleteVideo = (videoId) => {
-    const filtered = savedVideos.filter((video) => video.videoId !== videoId);
+    if (!user) return;
+
+    const filtered = savedVideos.filter(
+      (video) => video.videoId !== videoId
+    );
 
     setSavedVideos(filtered);
-    localStorage.setItem('savedVideos', JSON.stringify(filtered));
+    localStorage.setItem(
+      `savedVideos_${user.uid}`,
+      JSON.stringify(filtered)
+    );
   };
 
+  if (!user) {
+    return (
+      <main className="savedPage">
+        <div className="emptySaved">
+          <h3>로그인이 필요합니다.</h3>
+          <p>로그인 후 저장한 강의를 확인할 수 있어요.</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="savedPage">
@@ -60,7 +90,7 @@ function Savedvideo() {
         </section>
       )}
     </main>
-  )
+  );
 }
 
-export default Savedvideo
+export default Savedvideo;

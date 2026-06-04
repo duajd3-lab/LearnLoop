@@ -7,9 +7,23 @@ import Home from './pages/Home';
 import Explore from './pages/Explore';
 import Savedvideo from './pages/Savedvideo';
 import Mypage from './pages/Mypage';
+import Login from './pages/Login';
+
+import { auth } from "./firebase";
+import { useEffect, useState } from "react";
 
 
 function App() {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
 
@@ -23,10 +37,17 @@ function App() {
           </div>
 
           <nav className='menu'>
-            {/* <Link to='/todo'>Todolist</Link> */}
             <Link to='/explore'>강의 탐색</Link>
-            {/* <Link to='/saved'>저장한 강의</Link> */}
-            <Link to='/mypage'>마이페이지</Link>
+
+            {user ? (
+              <Link to='/mypage'>
+                📚 마이페이지
+              </Link>
+            ) : (
+              <Link to='/login'>
+                로그인
+              </Link>
+            )}
           </nav>
 
         </section>
@@ -41,7 +62,8 @@ function App() {
           <Route path='/todo' element={<TodoList />} />
           <Route path='/explore' element={<Explore />} />
           <Route path='/saved' element={<Savedvideo />} />
-          <Route path='/mypage' element={<Mypage/>} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/mypage' element={<Mypage />} />
         </Routes>
 
 

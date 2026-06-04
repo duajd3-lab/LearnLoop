@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/Explore.scss';
-import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import { auth } from '../firebase';
 
 function Explore() {
-    //const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const urlKeyword = searchParams.get('keyword') || '';
 
+    const [title, setTitle] = useState(urlKeyword);
     const [videos, setVideos] = useState([]);
-    const [title, setTitle] = useState('자기계발을 위한 강의');
-    const [keyword, setKeyword] = useState('');
+    const [keyword, setKeyword] = useState(urlKeyword);
 
     const [savedVideos, setSavedVideos] = useState(() => {
         return JSON.parse(localStorage.getItem('savedVideos')) || [];
@@ -15,24 +17,26 @@ function Explore() {
 
     const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
-    const searchYoutube = async (keyword) => {
+    const searchYoutube = async (searchText) => {
+        if (!searchText.trim()) return;
 
-        setTitle(`${keyword} `);
+        setTitle(searchText);
 
         const res = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q=${keyword}&key=${API_KEY}`
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q=${encodeURIComponent(
+                searchText
+            )}&key=${API_KEY}`
         );
 
         const data = await res.json();
-
         setVideos(data.items || []);
-
     };
 
 
     useEffect(() => {
-        searchYoutube('자기계발을 위한 강의');
-    }, []);
+        searchYoutube(urlKeyword);
+        setKeyword(urlKeyword);
+    }, [urlKeyword]);
 
 
     const decodeHtml = (text) => {
@@ -64,7 +68,37 @@ function Explore() {
         }
 
         setSavedVideos(updatedVideos);
-        localStorage.setItem('savedVideos', JSON.stringify(updatedVideos));
+
+        const user = auth.currentUser;
+
+        if (!user) {
+            alert('로그인 후 저장할 수 있습니다.');
+            return;
+        }
+
+        const savedKey = `savedVideos_${user.uid}`;
+
+        const prev = JSON.parse(localStorage.getItem(savedKey)) || [];
+
+        const newVideo = {
+            videoId: video.id.videoId,
+            title: video.snippet.title,
+            channelTitle: video.snippet.channelTitle,
+            thumbnail: video.snippet.thumbnails.medium.url,
+            url: `https://www.youtube.com/watch?v=${video.id.videoId}`,
+        };
+
+        const isAlreadySaved = prev.some(
+            (item) => item.videoId === newVideo.videoId
+        );
+
+        if (isAlreadySaved) {
+            alert('이미 저장된 강의입니다.');
+            return;
+        }
+
+        localStorage.setItem(savedKey, JSON.stringify([...prev, newVideo]));
+        alert('강의가 저장되었습니다.');
 
         //   navigate('/saved');
     };
@@ -229,7 +263,7 @@ function Explore() {
                                 <button
                                     className={`bookmarkBtn ${isSaved(video.id.videoId) ? 'active' : ''
                                         }`}
-                                    onClick={(e) => {e.stopPropagation(); toggleSave(video);}}
+                                    onClick={(e) => { e.stopPropagation(); toggleSave(video); }}
                                 >
 
                                     <span className="material-symbols-rounded">
