@@ -17,9 +17,7 @@ function Explore() {
     const [currentSearch, setCurrentSearch] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const [savedVideos, setSavedVideos] = useState(() => {
-        return JSON.parse(localStorage.getItem('savedVideos')) || [];
-    });
+    const [savedVideos, setSavedVideos] = useState([]);
 
     const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
@@ -72,8 +70,8 @@ function Explore() {
         }
     };
 
+    // 기본 영상 불러오기
     useEffect(() => {
-
         if (urlKeyword) {
             searchYoutube(urlKeyword);
             setTitle(urlKeyword);
@@ -83,8 +81,24 @@ function Explore() {
         }
 
         setKeyword('');
-
     }, [urlKeyword]);
+
+    // 로그인 사용자별 북마크 불러오기
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (!user) {
+                setSavedVideos([]);
+                return;
+            }
+
+            const data =
+                JSON.parse(localStorage.getItem(`savedVideos_${user.uid}`)) || [];
+
+            setSavedVideos(data);
+        });
+
+        return () => unsubscribe();
+    }, []);
 
 
     const decodeHtml = (text) => {
@@ -97,6 +111,13 @@ function Explore() {
 
     //스크랩 토글
     const toggleSave = (video) => {
+        const user = auth.currentUser;
+
+        if (!user) {
+            alert('로그인 후 저장할 수 있습니다.');
+            return;
+        }
+
         const videoData = {
             videoId: video.id.videoId,
             title: decodeHtml(video.snippet.title),
@@ -117,12 +138,6 @@ function Explore() {
 
         setSavedVideos(updatedVideos);
 
-        const user = auth.currentUser;
-
-        if (!user) {
-            alert('로그인 후 저장할 수 있습니다.');
-            return;
-        }
 
         const savedKey = `savedVideos_${user.uid}`;
 
@@ -192,6 +207,40 @@ function Explore() {
         localStorage.setItem(recentKey, JSON.stringify(updatedVideos));
 
         window.open(newVideo.url, '_blank');
+    };
+
+    const toggleBookmark = (video) => {
+
+        if (!auth.currentUser) {
+            alert('로그인 후 이용 가능합니다.');
+            return;
+        }
+
+        const exists = savedVideos.some(
+            (item) => item.videoId === video.videoId
+        );
+
+        if (exists) {
+            const updated = savedVideos.filter(
+                (item) => item.videoId !== video.videoId
+            );
+
+            setSavedVideos(updated);
+
+            localStorage.setItem(
+                `savedVideos_${auth.currentUser.uid}`,
+                JSON.stringify(updated)
+            );
+        } else {
+            const updated = [...savedVideos, video];
+
+            setSavedVideos(updated);
+
+            localStorage.setItem(
+                `savedVideos_${auth.currentUser.uid}`,
+                JSON.stringify(updated)
+            );
+        }
     };
 
     return (

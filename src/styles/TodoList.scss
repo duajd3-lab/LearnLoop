@@ -298,25 +298,36 @@
    Tablet
 ========================= */
 @media (max-width: 1024px) {
+
   .todoPage {
-    padding: 45px 5% 80px;
+    display: grid;
+    grid-template-columns:250px 1fr;
     gap: 50px;
+    align-items: start;
   }
 
-  .todoHeader {
-    h2 {
-      font-size: 36px;
-    }
+  /* 학습률 카드 */
+  .todoPage > div:first-child {
+    grid-column: 1;
+    grid-row: 1;
   }
 
+  /* 투두리스트 */
   .todoNote {
-    width: 460px;
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    height: 700px;
   }
 
-  .summaryTop {
-    div {
-      width: 105px;
-    }
+  /* 캘린더 */
+  .todoCalendar,
+  .calendarBox {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+
+    width: 100%;
+    margin-top: 0;
   }
 }
 
@@ -324,11 +335,10 @@
    Mobile
 ========================= */
 @media (max-width: 768px) {
-  .todoPage {
+   .todoPage {
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 45px;
-    padding: 40px 5% 70px;
+    gap: 20px;
   }
 
   .todoHeader {

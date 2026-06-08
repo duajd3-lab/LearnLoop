@@ -847,6 +847,10 @@
     }
   }
 
+  .TodoMemo{
+  display: none;
+}
+
   .todoCard {
     width: 100%;
     max-width: 380px;
@@ -953,6 +957,10 @@
       font-size: 13px;
     }
   }
+
+  .TodoMemo{
+  display: none;
+}
 
   .startBtn {
     width: 130px;
