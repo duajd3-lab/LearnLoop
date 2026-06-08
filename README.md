@@ -8,7 +8,7 @@
 
 ## 🌐 배포
 
-👉 **[[배포 URL 입력](https://learn-loop-sandy.vercel.app/)](https://learn-loop-sandy.vercel.app/)**
+👉 **[(https://learn-loop-sandy.vercel.app/)](https://learn-loop-sandy.vercel.app/)**
 
 ---
 
