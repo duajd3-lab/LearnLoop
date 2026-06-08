@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/TodoMemo.scss';
 
 function TodoMemo() {
-  const todos = [
+
+  const [todos, setTodos] = useState([
     { id: 1, text: '숏폼 편집 강의 듣기', done: true },
     { id: 2, text: '피그마 UI 따라 만들기', done: false },
     { id: 3, text: '블로그 글쓰기', done: false },
-  ];
+    { id: 4, text: '강의 복습하기', done: false },
+  ]);
+
+  const toggleTodo = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id
+          ? { ...todo, done: !todo.done }
+          : todo
+      )
+    );
+  };
 
   return (
     <div className="TodoMemo">
@@ -17,24 +29,22 @@ function TodoMemo() {
       </div>
 
       <ul className="todoList">
-        {todos.map((todo) => {
-          return (
-            <li key={todo.id} className={todo.done ? 'done' : ''}>
-              <button className="checkBtn">
-                {todo.done && '✓'}
-              </button>
-              <p>{todo.text}</p>
-            </li>
-          );
-        })}
-      </ul>
+        {todos.map((todo) => (
+          <li
+            key={todo.id}
+            className={todo.done ? 'done' : ''}
+          >
+            <button
+              className="checkBtn"
+              onClick={() => toggleTodo(todo.id)}
+            >
+              {todo.done ? '✓' : ''}
+            </button>
 
-      <div className="memoBottom">
-        <span>진행률 33%</span>
-        <div className="progressBar">
-          <div></div>
-        </div>
-      </div>
+            <p>{todo.text}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

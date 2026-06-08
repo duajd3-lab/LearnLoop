@@ -1,56 +1,128 @@
 .myPage {
   width: 100%;
-  max-width: 1580px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding-top: 24px;
+  padding: 50px 0 90px;
+
+  .loginBtn {
+  margin: 35px auto 0;
+
+  width: 140px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #5072fc,
+    #6f88eb
+  );
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(91, 124, 250, 0.3);
+    }
+  }
 }
 
+/* 상단 로그인 정보 */
 .mypageHeader {
+  min-height: 130px;
+  padding: 32px 38px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
 
+  border-radius: 28px;
+  background: linear-gradient(135deg, #eef2ff 0%, #ffffff 60%);
+  border: 1px solid rgba(91, 124, 250, 0.18);
+  box-shadow: 0 20px 50px rgba(91, 124, 250, 0.12);
+
   h2 {
-    color: #5b6bff;
+    font-size: 20px;
+    font-weight: 800;
+    color: #24315f;
   }
 
   .loginInfo {
     text-align: right;
-    font-size: 13px;
-
-    button {
-      border: 0;
-      background: none;
-      cursor: pointer;
-      font-size: 12px;
-    }
+    font-size: 14px;
+    color: #6b7280;
   }
-  .myPageBtn{
-    background-color: #5072fc73;
+
+  .myPageBtn {
+    margin-left: 12px;
+    padding: 11px 18px;
+
     border: 0;
+    border-radius: 999px;
+    background: #5b7cfa;
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
-      font-size: 15px;
-      padding: 10px;
-      border-radius: 10px;
+
+    box-shadow: 0 10px 24px rgba(91, 124, 250, 0.25);
+    transition: 0.25s;
+
+    &:hover {
+      transform: translateY(-2px);
+      background: #4868ee;
+    }
   }
 }
 
+
+/* 탭 */
 .tabMenu {
   display: flex;
-  margin-top: 30px;
+  gap: 10px;
+  margin-top: 34px;
+  padding-left: 10px;
 
   button {
-    width: 130px;
-    height: 45px;
-    border: 0;
-    border-radius: 16px 16px 0 0;
-    background: #aebdff;
-    color: #fff;
+    min-width: 145px;
+    height: 48px;
+    padding: 0 22px;
+
+    border: 1px solid rgba(91, 124, 250, 0.2);
+    border-bottom: 0;
+    border-radius: 18px 18px 0 0;
+
+    background: rgba(174, 189, 255, 0.55);
+    color: #4b5f9f;
+
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
+
+    transition: 0.25s;
+
+    &:hover {
+      background: #dfe6ff;
+      transform: translateY(-2px);
+    }
   }
 
   .active {
-    background: #5f78ff;
+    background: #5b7cfa;
+    color: #fff;
+    box-shadow: 0 -8px 24px rgba(91, 124, 250, 0.16);
   }
 }
 
@@ -98,22 +170,30 @@
     width: 150px;
     height: 150px;
     margin: 30px auto;
+
     border-radius: 50%;
-    border: 8px solid #c5ceff;
+    border: 9px solid #dbe3ff;
+    background: #fff;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #fff;
-    font-weight: 700;
+
+    color: #5b7cfa;
+    font-size: 28px;
+    font-weight: 800;
   }
 
   .routineBox {
-    width: 210px;
-    margin: 35px auto 0;
-    padding: 12px;
-    border-radius: 12px;
-    background: #b8d3ff;
+    width: 100%;
+    margin-top: 30px;
+    padding: 16px;
+
+    border-radius: 18px;
+    background: #f4f7ff;
+    color: #34406b;
     font-size: 13px;
+    line-height: 1.8;
 
     span {
       display: block;
@@ -121,61 +201,93 @@
   }
 }
 
+/* 투두 박스 */
 .todoBox {
-  min-height: 420px;
-  padding: 45px;
-  border: 2px solid #8a8cff;
-  border-radius: 18px;
+  min-height: 440px;
+  padding: 38px;
+
+  border-radius: 26px;
   background: #fff;
+  border: 1px solid rgba(91, 124, 250, 0.18);
+  box-shadow: 0 14px 35px rgba(91, 124, 250, 0.1);
 
   h3 {
-    margin-bottom: 25px;
-    font-size: 16px;
+    margin-bottom: 28px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #24315f;
   }
 
   label {
-    display: block;
-    padding: 12px 0;
-    border-bottom: 1px solid #aaa;
-    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 15px 0;
+    border-bottom: 1px solid #e5e9ff;
+
+    font-size: 15px;
+    color: #3f4a6b;
 
     input {
-      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+      accent-color: #5b7cfa;
     }
   }
 
   button {
     display: block;
-    margin: 80px auto 0;
-    padding: 12px 22px;
+    margin: 70px auto 0;
+    padding: 13px 26px;
+
     border: 0;
-    border-radius: 10px;
-    background: #5f78ff;
+    border-radius: 999px;
+    background: #5b7cfa;
     color: #fff;
+
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
-  }
-}
 
-.sideBoxes {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
+    box-shadow: 0 12px 26px rgba(91, 124, 250, 0.22);
+    transition: 0.25s;
 
-  div {
-    height: 75px;
-    border: 1px solid #8ab4ff;
-    border-radius: 12px;
-    background: #f7f9ff;
-
-    &:first-child {
-      height: 260px;
+    &:hover {
+      transform: translateY(-2px);
+      background: #4868ee;
     }
   }
 }
 
+/* 오른쪽 카드 */
+.sideBoxes {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  div {
+    min-height: 84px;
+    padding: 22px;
+
+    border-radius: 22px;
+    background: #fff;
+    border: 1px solid rgba(91, 124, 250, 0.14);
+    box-shadow: 0 12px 30px rgba(91, 124, 250, 0.08);
+
+    &:first-child {
+      min-height: 260px;
+    }
+  }
+}
+
+/* 저장 강의 */
 .bookmarkSection {
   h3 {
-    margin-bottom: 30px;
+    margin-bottom: 28px;
+    font-size: 24px;
+    font-weight: 800;
+    color: #24315f;
   }
 
   .lectureGrid {
@@ -186,24 +298,94 @@
 
   .lectureCard {
     padding: 20px;
-    border-radius: 18px;
+
+    border-radius: 24px;
     background: #fff;
-    border: 1px solid #b6c4ff;
+    border: 1px solid rgba(91, 124, 250, 0.16);
+    box-shadow: 0 14px 35px rgba(91, 124, 250, 0.1);
+
+    transition: 0.25s;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 45px rgba(91, 124, 250, 0.16);
+    }
 
     .thumb {
-      height: 150px;
-      border-radius: 14px;
-      background: #dde5ff;
+      height: 155px;
       margin-bottom: 18px;
+
+      border-radius: 18px;
+      background: linear-gradient(135deg, #dfe6ff, #f7f9ff);
     }
 
     h4 {
       margin-bottom: 8px;
+      font-size: 16px;
+      color: #24315f;
     }
 
     p {
-      color: #777;
+      color: #6b7280;
       font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+}
+
+
+
+
+/* 반응형 */
+@media (max-width: 1024px) {
+  .todoLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .bookmarkSection {
+    .lectureGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .myPage {
+    width: 94%;
+    padding-top: 30px;
+  }
+
+  .mypageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 26px 22px;
+
+    h2 {
+      font-size: 21px;
+    }
+  }
+
+  .tabMenu {
+    overflow-x: auto;
+    padding-left: 0;
+
+    button {
+      min-width: 120px;
+      font-size: 14px;
+    }
+  }
+
+  .mypageContent {
+    min-height: 620px;
+    background: #eef2ff;
+    padding: 30px;
+    border-radius: 0 28px 28px 28px;
+  }
+
+  .bookmarkSection {
+    .lectureGrid {
+      grid-template-columns: 1fr;
     }
   }
 }

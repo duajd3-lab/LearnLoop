@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import '../styles/App.scss';
 import '../styles/reset.css';
 import TodoMemo from '../components/TodoMemo';
-import TodoList from './TodoList';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
 
 
 function Home() {
@@ -11,6 +11,7 @@ function Home() {
 
   const [videos, setVideos] = useState([]);
   const [keyword, setKeyword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const decodeHtml = (text) => {
     const txt = document.createElement("textarea");
@@ -22,6 +23,8 @@ function Home() {
     const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
     try {
+      setLoading(true);
+
       const res = await fetch(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=4&q=${encodeURIComponent(
           '자기계발 강의'
@@ -32,6 +35,8 @@ function Home() {
       setVideos(data.items || []);
     } catch (error) {
       console.error('유튜브 영상 불러오기 실패:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,12 +45,26 @@ function Home() {
   }, []);
 
   const handleSearch = () => {
-    if (!keyword.trim()) return;
-    navigate(`/explore?keyword=${encodeURIComponent(keyword.trim())}`);
+    const trimmed = keyword.trim();
+
+    if (!trimmed) {
+      navigate('/explore');
+      return;
+    }
+
+    navigate(`/explore?keyword=${encodeURIComponent(trimmed)}`);
   };
 
   const handleKeywordClick = (text) => {
     navigate(`/explore?keyword=${encodeURIComponent(text)}`);
+  };
+
+  const goMyPage = () => {
+    if (auth.currentUser) {
+      navigate('/mypage');
+    } else {
+      navigate('/login');
+    }
   };
 
   return (
@@ -59,7 +78,7 @@ function Home() {
           <div className='heroLeft'>
             <h2>
               오늘의 배움이 <br />
-              내일의 나를 만듭니다.
+              <span>내일의 나를 만듭니다.</span>
             </h2>
             <div className='subBox'>
               <div>
@@ -68,12 +87,15 @@ function Home() {
                   지금 필요한 배움을 쉽고 빠르게 찾아보세요.
                 </span>
               </div>
-              <div><img src='./imgs/mainImage.png' ></img></div>
+              <div><img src='./imgs/mainImage.png' alt="학습 메인 이미지"></img></div>
             </div>
             <button className="startBtn" onClick={() => navigate('/explore')}>
               강의 탐색하기
             </button>
           </div>
+          <div className="floatingTag tag1">📚 자기계발</div>
+          <div className="floatingTag tag2">🤖 AI 활용</div>
+          <div className="floatingTag tag3">💻 IT 스킬</div>
 
         </div>
 
@@ -220,38 +242,52 @@ function Home() {
         <h3>지금 인기있는 짧은 강의</h3>
 
         <div className="HomeyoutubeBox">
-          {videos.slice(0, 4).map((video) => (
-            <div
-              key={video.id.videoId}
-              className="HomevideoClass"
-              onClick={() =>
-                window.open(
-                  `https://www.youtube.com/watch?v=${video.id.videoId}`,
-                  "_blank"
-                )
-              }
-            >
-              <img
-                src={video.snippet.thumbnails.medium.url}
-                alt={video.snippet.title}
-              />
 
-              <div className="HomevideoContent">
-                <strong>
-                  {decodeHtml(video.snippet.title).length > 28
-                    ? decodeHtml(video.snippet.title).slice(0, 28) + "..."
-                    : decodeHtml(video.snippet.title)}
-                </strong>
+          {loading ? (
+            <p className="loadingText">
+              강의를 불러오는 중입니다...
+            </p>
 
-                <p>{video.snippet.channelTitle}</p>
+          ) : videos.length === 0 ? (
+            <p className="loadingText">
+              표시할 강의가 없습니다.
+            </p>
 
-                <div className="HomevideoBottom">
-                  <span>⭐</span>
-                  <em>4.8(1,224)</em>
+          ) : (
+
+            videos.slice(0, 4).map((video) => (
+              <div
+                key={video.id.videoId}
+                className="HomevideoClass"
+                onClick={() =>
+                  window.open(
+                    `https://www.youtube.com/watch?v=${video.id.videoId}`,
+                    "_blank"
+                  )
+                }
+              >
+                <img
+                  src={video.snippet.thumbnails.medium.url}
+                  alt={video.snippet.title}
+                />
+
+                <div className="HomevideoContent">
+                  <strong>
+                    {decodeHtml(video.snippet.title).length > 28
+                      ? decodeHtml(video.snippet.title).slice(0, 28) + "..."
+                      : decodeHtml(video.snippet.title)}
+                  </strong>
+
+                  <p>{video.snippet.channelTitle}</p>
+
+                  <div className="HomevideoBottom">
+                    <span>⭐</span>
+                    <em>4.8(1,224)</em>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </section>
 
@@ -261,10 +297,10 @@ function Home() {
           <div className='goalText'>
             <span>오늘의 학습 목표를 세워보세요!</span>
             <p>일정을 계획하여 편리하게 관리하세요.</p>
-            <button onClick={() => navigate('/login')}>Todolist 이동하기</button>
+            <button onClick={goMyPage}>Todolist 이동하기</button>
           </div>
           <div className='goalImg'>
-            <img src='./imgs/todo.png' ></img>
+            <img src='./imgs/todo.png' alt="학습 목표 관리 이미지"></img>
           </div>
         </div>
 
@@ -272,10 +308,10 @@ function Home() {
           <div className='goalText'>
             <span>저번에 본 강의 복습해보세요!</span>
             <p>작은 습관이 큰 변화를 만듭니다.</p>
-            <button onClick={() => navigate('/login')}>저장한 강의 이동하기</button>
+            <button onClick={goMyPage}>저장한 강의 이동하기</button>
           </div>
           <div className='goalImg'>
-            <img src='./imgs/video.png' ></img>
+            <img src='./imgs/video.png' alt="저장한 강의 이미지"></img>
           </div>
         </div>
 
@@ -286,6 +322,7 @@ function Home() {
         <div className='mainTitle'>
           <h1>LearnLoop</h1>
         </div>
+        <p>© 2026 LearnLoop. All rights reserved.</p>
 
       </footer>
 

@@ -11,14 +11,18 @@
 .video2 {
   width: 100%;
   max-width: 1420px;
-  height: 580px;
+  
   //background-color: #5B7DFF;
   border-radius: 60px;
   text-align: center;
   justify-content: center;
   margin: 0 auto;
 
-  margin-bottom: 500px;
+   min-height: 580px;
+  height: auto;
+  //margin-bottom: 160px;
+
+  
 
   h3 {
     font-size: 30px;
@@ -145,5 +149,178 @@
 
     font-variation-settings:
       'FILL' 1;
+  }
+}
+
+
+// 강의 더보기 
+.moreBtnWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  padding-bottom: 150px;
+}
+
+.moreBtn {
+  min-width: 160px;
+  height: 50px;
+  padding: 0 26px;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, #5072fc, #6f88eb);
+  color: #fff;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 0.25s;
+
+  box-shadow: 0 12px 26px rgba(91, 124, 250, 0.22);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 32px rgba(91, 124, 250, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+
+/* =========================
+   강의 검색 페이지 반응형
+========================= */
+
+/* 태블릿 */
+@media (max-width: 1024px) {
+
+  .searchBox {
+    margin: 0 auto;
+    width: 520px;
+    padding-bottom: 50px;
+    border-radius: 30px;
+    text-align: center;
+  }
+  
+  .exploreSearch {
+    height: auto;
+    padding: 60px 24px;
+    margin-bottom: 70px;
+  }
+
+  .video2 {
+    width: 92%;
+    height: auto;
+    margin-bottom: 160px;
+
+    h3 {
+      font-size: 26px;
+    }
+
+    .youtubeBox {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 26px;
+
+      .videoClass {
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .exploreSearch {
+    padding: 50px 20px;
+    margin-bottom: 50px;
+  }
+
+  .video2 {
+    width: 92%;
+    border-radius: 32px;
+    margin-bottom: 120px;
+
+    h3 {
+      font-size: 23px;
+      padding: 25px 0 30px;
+    }
+
+    .youtubeBox {
+      grid-template-columns: 1fr;
+      gap: 22px;
+
+      .videoClass {
+        width: 100%;
+        min-height: auto;
+      }
+    }
+
+    .videoClass img {
+      height: 190px;
+    }
+  }
+
+  .videoContent {
+    padding: 16px 16px 58px;
+
+    span {
+      font-size: 15px;
+    }
+  }
+
+  .bookmarkArea {
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .bookmarkBtn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .moreBtnWrap {
+    margin-top: 32px;
+    padding-bottom: 100px;
+  }
+}
+
+/* 작은 모바일 */
+@media (max-width: 480px) {
+  .exploreSearch {
+    padding: 40px 16px;
+  }
+
+  .video2 {
+    width: 94%;
+
+    h3 {
+      font-size: 21px;
+    }
+
+    .videoClass img {
+      height: 175px;
+    }
+  }
+
+  .videoContent {
+    span {
+      font-size: 14px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .moreBtn {
+    min-width: 145px;
+    height: 46px;
+    font-size: 14px;
   }
 }

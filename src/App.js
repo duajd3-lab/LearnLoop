@@ -11,6 +11,7 @@ import Login from './pages/Login';
 
 import { auth } from "./firebase";
 import { useEffect, useState } from "react";
+import TopButton from './components/TopButton';
 
 
 function App() {
@@ -68,6 +69,9 @@ function App() {
 
 
       </div>
+      
+      <TopButton/>
+
     </BrowserRouter>
 
   );

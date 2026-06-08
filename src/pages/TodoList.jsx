@@ -9,11 +9,7 @@ function TodoList({ email }) {
   // 없으면 기본 투두 데이터를 사용함
   const [todos, setTodos] = useState(() => {
     const saveTodos = localStorage.getItem('learnloopTodos');
-    return saveTodos
-      ? JSON.parse(saveTodos)
-      : [
-
-      ];
+    return saveTodos ? JSON.parse(saveTodos) : [];
   });
 
   // 입력창에 작성한 학습 목표
@@ -26,11 +22,12 @@ function TodoList({ email }) {
   // null이면 새 투두 추가 상태
   const [editId, setEditId] = useState(null);
 
+
   // todos가 변경될 때마다 localStorage에 저장
   // 새로고침해도 데이터가 유지되게 함
   useEffect(() => {
-    localStorage.getItem('learnloopTodos', JSON.stringify(todos));
-  }, [todos])
+    localStorage.setItem('learnloopTodos', JSON.stringify(todos));
+  }, [todos]);
 
   // 완료된 투두 개수 계산
   const completedCount = todos.filter((todo) => todo.done).length;
@@ -57,7 +54,7 @@ function TodoList({ email }) {
             ? {
               ...todo,
               title: input,
-              time: time || '',
+              time: Number(time) || 0,
             }
             : todo
         )
@@ -71,13 +68,13 @@ function TodoList({ email }) {
         id: Date.now(),
         user: email,
         title: input,
-        time: time || '',
+        time: Number(time) || 0,
         done: false,
       };
 
       // 새 투두를 맨 위에 추가
       setTodos([newTodo, ...todos]);
-      localStorage.setItem('learnloopTodos', JSON.stringify([newTodo, ...todos]))
+
     }
     // 입력창 초기화
     setInput('');
@@ -86,14 +83,57 @@ function TodoList({ email }) {
 
   // 완료 체크 / 체크 해제 함수
   const toggleTodo = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id
-          ? { ...todo, done: !todo.done }
-          : todo
-      )
+    const today = new Date().toISOString().split("T")[0];
+
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id
+        ? {
+          ...todo,
+          done: !todo.done,
+          completedDate: !todo.done ? today : null,
+        }
+        : todo
     );
+
+    setTodos(updatedTodos);
   };
+
+
+  // 연속 학습일 계산 함수, 하루에 하나 이상 완료하면 연속 학습일 증가 방식
+  const getStreakDays = () => {
+    const dates = [
+      ...new Set(
+        todos
+          .filter((todo) => todo.done && todo.completedDate)
+          .map((todo) => todo.completedDate)
+      ),
+    ];
+
+    if (dates.length === 0) return 0;
+
+    dates.sort((a, b) => new Date(b) - new Date(a));
+
+    let streak = 1;
+
+    for (let i = 0; i < dates.length - 1; i++) {
+      const current = new Date(dates[i]);
+      const next = new Date(dates[i + 1]);
+
+      const diff =
+        (current - next) / (1000 * 60 * 60 * 24);
+
+      if (diff === 1) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+
+    return streak;
+  };
+
+  //연속 학습일 변수 생성
+  const streakDays = getStreakDays();
 
   // 투두 삭제 함수
   const deleteTodo = (id) => {
@@ -125,16 +165,37 @@ function TodoList({ email }) {
 
   const day = dayNames[today.getDay()];
 
+
+  const getMinutes = (timeText) => {
+    if (!timeText) return 0;
+
+    const text = String(timeText).trim();
+
+    // "1시간 20분"
+    const hourMatch = text.match(/(\d+)\s*시간/);
+    const minuteMatch = text.match(/(\d+)\s*분/);
+
+    const hours = hourMatch ? Number(hourMatch[1]) : 0;
+    const minutes = minuteMatch ? Number(minuteMatch[1]) : 0;
+
+    // "20"처럼 숫자만 입력한 경우
+    if (!hourMatch && !minuteMatch) {
+      const onlyNumber = Number(text);
+      return Number.isNaN(onlyNumber) ? 0 : onlyNumber;
+    }
+
+    return hours * 60 + minutes;
+  };
+
   //총 학습시간 계산
   const totalStudyTime = todos
-    .filter(todo => todo.done)
+    .filter((todo) => todo.done)
     .reduce((acc, todo) => {
-      return acc + Number(todo.time.replace('분', ''));
+      return acc + Number(todo.time || 0);
     }, 0);
 
   const hour = Math.floor(totalStudyTime / 60);
   const minute = totalStudyTime % 60;
-
 
   return (
     <main className="todoPage">
@@ -171,9 +232,9 @@ function TodoList({ email }) {
           </div>
           <p>진행률 {progress}%</p>
           <div className="routineBox">
-            <span>🔥 5일 연속 학습 중</span>
+            <span>🔥 {streakDays}일 연속 학습 중</span>
             <span>
-              ⏱ 오늘 학습 시간 {hour}h {minute}m
+              ⏱ 오늘 학습 시간 {hour}시간 {minute}분
             </span>
           </div>
         </aside>
@@ -194,8 +255,8 @@ function TodoList({ email }) {
             onChange={(e) => setInput(e.target.value)}
           />
           <input
-            type="text"
-            placeholder="예: 20분"
+            type="number"
+            placeholder="예: 20"
             value={time}
             onChange={(e) => setTime(e.target.value)}
           />
@@ -217,7 +278,7 @@ function TodoList({ email }) {
 
                 <div className='todoInfo'>
                   <p>{todo.title}</p>
-                  <span>{todo.time}</span>
+                  <span>{todo.time}분</span>
                 </div>
 
                 <div className="todoActions">

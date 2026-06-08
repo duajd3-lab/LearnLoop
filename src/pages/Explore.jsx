@@ -2,14 +2,20 @@ import React, { useEffect, useState } from 'react'
 import '../styles/Explore.scss';
 import { useSearchParams } from 'react-router-dom';
 import { auth } from '../firebase';
+import TopButton from '../components/TopButton';
 
 function Explore() {
     const [searchParams] = useSearchParams();
-    const urlKeyword = searchParams.get('keyword') || '';
+    const urlKeyword = searchParams.get('keyword');
 
     const [title, setTitle] = useState(urlKeyword);
     const [videos, setVideos] = useState([]);
     const [keyword, setKeyword] = useState(urlKeyword);
+
+    // 강의 더보기
+    const [nextPageToken, setNextPageToken] = useState('');
+    const [currentSearch, setCurrentSearch] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const [savedVideos, setSavedVideos] = useState(() => {
         return JSON.parse(localStorage.getItem('savedVideos')) || [];
@@ -18,24 +24,66 @@ function Explore() {
     const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
     const searchYoutube = async (searchText) => {
-        if (!searchText.trim()) return;
+        if (!searchText || !searchText.trim()) return;
 
-        setTitle(searchText);
+        try {
+            setLoading(true);
+            setTitle(searchText);
+            setCurrentSearch(searchText);
 
-        const res = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q=${encodeURIComponent(
-                searchText
-            )}&key=${API_KEY}`
-        );
+            const res = await fetch(
+                `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q=${encodeURIComponent(
+                    searchText
+                )}&key=${API_KEY}`
+            );
 
-        const data = await res.json();
-        setVideos(data.items || []);
+            const data = await res.json();
+
+            setVideos(data.items || []);
+            setNextPageToken(data.nextPageToken || '');
+        } catch (error) {
+            console.error('유튜브 영상 불러오기 실패:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
+    // 강의 더보기
+    const loadMoreVideos = async () => {
+        if (!nextPageToken || !currentSearch) return;
+
+        try {
+            setLoading(true);
+
+            const res = await fetch(
+                `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q=${encodeURIComponent(
+                    currentSearch
+                )}&pageToken=${nextPageToken}&key=${API_KEY}`
+            );
+
+            const data = await res.json();
+
+            setVideos((prev) => [...prev, ...(data.items || [])]);
+            setNextPageToken(data.nextPageToken || '');
+        } catch (error) {
+            console.error('추가 강의 불러오기 실패:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        searchYoutube(urlKeyword);
-        setKeyword(urlKeyword);
+
+        if (urlKeyword) {
+            searchYoutube(urlKeyword);
+            setTitle(urlKeyword);
+        } else {
+            searchYoutube('자기계발 강의');
+            setTitle('자기계발 강의');
+        }
+
+        setKeyword('');
+
     }, [urlKeyword]);
 
 
@@ -108,6 +156,42 @@ function Explore() {
         return savedVideos.some(
             (video) => video.videoId === videoId
         );
+    };
+
+
+    const saveRecentVideo = (video) => {
+        const user = auth.currentUser;
+
+        if (!user) {
+            window.open(
+                `https://www.youtube.com/watch?v=${video.id.videoId}`,
+                '_blank'
+            );
+            return;
+        }
+
+        //최근 본 강의 저장
+        const recentKey = `recentVideos_${user.uid}`;
+
+        const prev = JSON.parse(localStorage.getItem(recentKey)) || [];
+
+        const newVideo = {
+            videoId: video.id.videoId,
+            title: decodeHtml(video.snippet.title),
+            channelTitle: video.snippet.channelTitle,
+            thumbnail: video.snippet.thumbnails.medium.url,
+            url: `https://www.youtube.com/watch?v=${video.id.videoId}`,
+            watchedAt: new Date().toISOString(),
+        };
+
+        const updatedVideos = [
+            newVideo,
+            ...prev.filter((item) => item.videoId !== newVideo.videoId),
+        ].slice(0, 10);
+
+        localStorage.setItem(recentKey, JSON.stringify(updatedVideos));
+
+        window.open(newVideo.url, '_blank');
     };
 
     return (
@@ -230,13 +314,8 @@ function Explore() {
 
                         <div
                             key={video.id.videoId}
-                            className='videoClass'
-                            onClick={() =>
-                                window.open(
-                                    `https://www.youtube.com/watch?v=${video.id.videoId}`,
-                                    '_blank'
-                                )
-                            }
+                            className="videoClass"
+                            onClick={() => saveRecentVideo(video)}
                         >
 
                             <img
@@ -281,10 +360,26 @@ function Explore() {
                     ))}
                 </div>
 
+                {nextPageToken && (
+                    <div className="moreBtnWrap">
+                        <button
+                            type="button"
+                            className="moreBtn"
+                            onClick={loadMoreVideos}
+                            disabled={loading}
+                        >
+                            {loading ? '불러오는 중...' : '강의 더보기'}
+                        </button>
+                    </div>
+                )}
+
             </section>
 
+            <TopButton />
 
         </div>
+
+
     )
 }
 
