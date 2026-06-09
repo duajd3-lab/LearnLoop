@@ -3,10 +3,15 @@ import '../styles/Explore.scss';
 import { useSearchParams } from 'react-router-dom';
 import { auth } from '../firebase';
 import TopButton from '../components/TopButton';
+import { useNavigate } from 'react-router-dom'
+
 
 function Explore() {
     const [searchParams] = useSearchParams();
     const urlKeyword = searchParams.get('keyword');
+
+    
+    const [pageNum,setPageNum] = useState(1);
 
     const [title, setTitle] = useState(urlKeyword);
     const [videos, setVideos] = useState([]);
@@ -18,27 +23,40 @@ function Explore() {
     const [loading, setLoading] = useState(false);
 
     const [savedVideos, setSavedVideos] = useState([]);
+    const [allData, setAllData] = useState([]);
 
     const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
     const searchYoutube = async (searchText) => {
+        if(window.event.type==='submit') window.event.preventDefault();
         if (!searchText || !searchText.trim()) return;
 
         try {
-            setLoading(true);
+            //setLoading(true);
             setTitle(searchText);
             setCurrentSearch(searchText);
+            setPageNum(1);
 
-            const res = await fetch(
-                `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q=${encodeURIComponent(
-                    searchText
-                )}&key=${API_KEY}`
-            );
-
+            const res = await fetch(`https://react-todolist-wine.vercel.app/learn`);
             const data = await res.json();
+            let course = data.result[0].data;
+            let courseKey = Object.keys(course);
+            let courseValue = Object.values(course);
+            
+            let courseItems = [];
+            for(let items of courseValue){
+                for(let item of items){
+                let keyword = item.snippet.channelTitle + item.snippet.description;
+                
+                if(keyword.includes(searchText)){
+                    courseItems.push(item);
+                }
+                }
+            }
 
-            setVideos(data.items || []);
-            setNextPageToken(data.nextPageToken || '');
+            setVideos(courseItems.slice(0,8) || []);
+            setAllData(courseItems)
+            setKeyword('');
         } catch (error) {
             console.error('유튜브 영상 불러오기 실패:', error);
         } finally {
@@ -48,21 +66,21 @@ function Explore() {
 
     // 강의 더보기
     const loadMoreVideos = async () => {
-        if (!nextPageToken || !currentSearch) return;
+        if ( !currentSearch) return;
+
 
         try {
             setLoading(true);
 
-            const res = await fetch(
-                `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=8&q=${encodeURIComponent(
-                    currentSearch
-                )}&pageToken=${nextPageToken}&key=${API_KEY}`
-            );
+            const nextPage = pageNum + 1;
+            const totalPage = Math.ceil(allData.length / 8);
+            if(totalPage < nextPage) return;
 
-            const data = await res.json();
+            
+            setVideos(allData.slice(0, 8 * nextPage) || []);
+            setPageNum(nextPage);
 
-            setVideos((prev) => [...prev, ...(data.items || [])]);
-            setNextPageToken(data.nextPageToken || '');
+            
         } catch (error) {
             console.error('추가 강의 불러오기 실패:', error);
         } finally {
@@ -76,8 +94,8 @@ function Explore() {
             searchYoutube(urlKeyword);
             setTitle(urlKeyword);
         } else {
-            searchYoutube('자기계발 강의');
-            setTitle('자기계발 강의');
+            searchYoutube('자기계발');
+            setTitle('자기계발');
         }
 
         setKeyword('');
@@ -251,15 +269,17 @@ function Explore() {
                 <div className="searchBox">
                     <h4>무엇을 배우고 싶으신가요?</h4>
                     <div className="inputBox">
-                        <input
-                            type="text"
-                            placeholder="검색어를 입력해주세요."
-                            value={keyword}
-                            onChange={(e) => setKeyword(e.target.value)}
-                        />
-                        <button type='button' onClick={() => searchYoutube(keyword)}>
-                            <img src='./imgs/ic-search.svg' alt='검색'></img>
-                        </button>
+                        <form onSubmit={(e)=>searchYoutube(keyword)}>
+                            <input
+                                type="text"
+                                placeholder="관심 있는 강의를 검색해보세요."
+                                value={keyword}
+                                onChange={(e) => setKeyword(e.target.value)}
+                            />
+                            <button type='submit'>
+                                <img src='./imgs/ic-search.svg' alt='검색'></img>
+                            </button>
+                        </form>
                     </div>
                 </div>
 
@@ -279,7 +299,7 @@ function Explore() {
                         <button
                             type="button"
                             className='keywordBtn'
-                            onClick={() => searchYoutube('디자인 강의')}>
+                            onClick={() => searchYoutube('디자인')}>
                             <span className="material-symbols-rounded">
                                 design_services
                             </span>
@@ -290,7 +310,7 @@ function Explore() {
                         <button
                             type="button"
                             className='keywordBtn'
-                            onClick={() => searchYoutube('AI툴 활용')}>
+                            onClick={() => searchYoutube('AI툴')}>
                             <span className="material-symbols-rounded">
                                 chat_apps_script
                             </span>
@@ -300,7 +320,7 @@ function Explore() {
                     <div className='sBtn'>
                         <button type="button"
                             className='keywordBtn'
-                            onClick={() => searchYoutube('IT 분야')}>
+                            onClick={() => searchYoutube('IT')}>
                             <span className="material-symbols-rounded">
                                 computer
                             </span>
@@ -409,7 +429,7 @@ function Explore() {
                     ))}
                 </div>
 
-                {nextPageToken && (
+                
                     <div className="moreBtnWrap">
                         <button
                             type="button"
@@ -420,7 +440,7 @@ function Explore() {
                             {loading ? '불러오는 중...' : '강의 더보기'}
                         </button>
                     </div>
-                )}
+                
 
             </section>
 

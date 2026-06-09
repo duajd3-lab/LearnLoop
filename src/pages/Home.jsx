@@ -25,14 +25,29 @@ function Home() {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=4&q=${encodeURIComponent(
-          '자기계발 강의'
-        )}&key=${API_KEY}`
-      );
-
+      // const res = await fetch(
+      //   `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=4&q=${encodeURIComponent(
+      //     '자기계발 강의'
+      //   )}&key=${API_KEY}`
+      // );
+      const res = await fetch(`https://react-todolist-wine.vercel.app/learn`);
       const data = await res.json();
-      setVideos(data.items || []);
+      let course = data.result[0].data;
+      let courseKey = Object.keys(course);
+      let courseValue = Object.values(course);
+     
+      let courseItems = [];
+      for(let items of courseValue){
+        for(let item of items){
+          let keyword = item.snippet.channelTitle + item.snippet.description;
+          if(keyword.includes('자기계발')){
+            courseItems.push(item);
+          }
+        }
+      }
+
+
+      setVideos(courseItems || []);
     } catch (error) {
       console.error('유튜브 영상 불러오기 실패:', error);
     } finally {
