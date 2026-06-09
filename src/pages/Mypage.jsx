@@ -5,12 +5,12 @@ import '../styles/Mypage.scss';
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 import Recentvideo from './Recentvideo';
-import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 function Mypage() {
   const [activeTab, setActiveTab] = useState("todo");
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -28,27 +28,27 @@ function Mypage() {
     <div className="myPage">
       <div className="mypageHeader">
         {user ? (
-  <>
-    <h2>📚 {user.email}님, 안녕하세요.</h2>
-    <button onClick={logout} className="myPageBtn">
-      로그아웃
-    </button>
-  </>
-) : (
-  <>
-    <h2>로그인이 필요합니다.</h2>
+          <>
+            <h2>📚 {user.email}님, 안녕하세요.</h2>
+            <button onClick={logout} className="myPageBtn">
+              로그아웃
+            </button>
+          </>
+        ) : (
+          <>
+            <h2>로그인이 필요합니다.</h2>
 
-    <div className="loginWrap">
-      <button
-        className="loginBtn"
-        onClick={() => Navigate('/login')}
-      >
-        로그인 하러가기
-      </button>
-    </div>
-  </>
-)}
-</div>
+            <div className="loginWrap">
+              <button
+                className="loginBtn"
+                onClick={() => navigate('/login')}
+              >
+                로그인 하러가기
+              </button>
+            </div>
+          </>
+        )}
+      </div>
 
       {user && (
         <>
@@ -67,7 +67,7 @@ function Mypage() {
               저장한 강의
             </button>
 
-             <button
+            <button
               className={activeTab === "recent" ? "active" : ""}
               onClick={() => setActiveTab("recent")}
             >
@@ -76,7 +76,7 @@ function Mypage() {
           </div>
 
           <div className="mypageContent">
-            {activeTab === "todo" && <TodoList email={user.email} />}
+            {activeTab === "todo" && <TodoList user={user} />}
             {activeTab === "bookmark" && <Savedvideo />}
             {activeTab === "recent" && <Recentvideo />}
           </div>

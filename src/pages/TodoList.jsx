@@ -2,15 +2,24 @@ import React, { useEffect, useState } from 'react'
 import '../styles/TodoList.scss';
 import TodoCalendar from '../components/TodoCalendar';
 
-function TodoList({ email }) {
+function TodoList({ user }) {
 
   // 투두 데이터 상태
   // 처음 실행될 때 localStorage에 저장된 값이 있으면 가져오고,
   // 없으면 기본 투두 데이터를 사용함
-  const [todos, setTodos] = useState(() => {
-    const saveTodos = localStorage.getItem('learnloopTodos');
-    return saveTodos ? JSON.parse(saveTodos) : [];
-  });
+  const [todos, setTodos] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+
+  //불러오기
+  useEffect(() => {
+    if (!user) return;
+
+    const todoKey = `learnloopTodos_${user.uid}`;
+    const saveTodos = localStorage.getItem(todoKey);
+
+    setTodos(saveTodos ? JSON.parse(saveTodos) : []);
+    setLoaded(true);
+  }, [user]);
 
   // 입력창에 작성한 학습 목표
   const [input, setInput] = useState('');
@@ -26,8 +35,11 @@ function TodoList({ email }) {
   // todos가 변경될 때마다 localStorage에 저장
   // 새로고침해도 데이터가 유지되게 함
   useEffect(() => {
-    localStorage.setItem('learnloopTodos', JSON.stringify(todos));
-  }, [todos]);
+    if (!user || !loaded) return;
+
+    const todoKey = `learnloopTodos_${user.uid}`;
+    localStorage.setItem(todoKey, JSON.stringify(todos));
+  }, [todos, user, loaded]);
 
   // 완료된 투두 개수 계산
   const completedCount = todos.filter((todo) => todo.done).length;
@@ -66,7 +78,7 @@ function TodoList({ email }) {
       // editId가 없으면 새 투두 추가
       const newTodo = {
         id: Date.now(),
-        user: email,
+        user: user.email,
         title: input,
         time: Number(time) || 0,
         done: false,
